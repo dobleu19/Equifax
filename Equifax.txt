@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Equifax Training Portal – Sitio Vulnerable</title>
+</head>
+<body>
+
+  <h1>Portal Interno de Equifax</h1>
+
+  <!-- Vulnerabilidad: Comentarios HTML que exponen rutas sensibles -->
+  <!-- Acceso administrativo: /admin/panel_backup.php -->
+  <!-- Script no protegido: /scripts/old_validation.js -->
+
+  <form method="post" action="/login.php">
+    <label for="user">Usuario:</label><br>
+    <input type="text" id="user" name="user"><br><br>
+
+    <label for="pass">Contraseña:</label><br>
+    <input type="password" id="pass" name="pass"><br><br>
+
+    <input type="submit" value="Iniciar Sesión">
+  </form>
+
+  <!-- Vulnerabilidad: sin HTTPS y sin tokens CSRF -->
+
+  <script>
+    // Vulnerabilidad: exposición de token de sesión en cliente
+    var session = "SESSION_ID=abc123xyz";
+    console.log("Token de sesión: " + session);
+  </script>
+
+  <p>¿Olvidó su contraseña? Haga clic <a href="/reset_password.php">aquí</a>.</p>
+
+  <hr>
+
+  <p>Portal de historial de clientes: <a href="/historial_clientes.php">Acceder</a></p>
+
+  <!-- Falta cabecera X-Frame-Options, lo que permite clickjacking -->
+
+  <footer>
+    <hr>
+    <p>© 2017 Equifax - Uso interno solamente</p>
+    <p>Versión de acceso antiguo: <a href="/panel_v1/">/panel_v1/</a></p>
+  </footer>
+
+</body>
+</html>
